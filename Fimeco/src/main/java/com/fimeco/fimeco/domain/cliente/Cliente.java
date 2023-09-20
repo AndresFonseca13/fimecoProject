@@ -39,4 +39,15 @@ public class Cliente {
 
     @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private List<Pedido> pedidos;
+
+    public Cliente(DatosRegistroCliente datosResDatosRegistroCliente) {
+        this.nombre = datosResDatosRegistroCliente.nombre();
+        this.telefono = datosResDatosRegistroCliente.telefono();
+        this.email = datosResDatosRegistroCliente.email();
+        this.usuario = datosResDatosRegistroCliente.usuario();
+        this.clave = datosResDatosRegistroCliente.clave();
+        this.nombrePersona = datosResDatosRegistroCliente.nombrePersona();
+        this.telefonoPersona = datosResDatosRegistroCliente.telefonoPersona();
+        this.direccion = new Direccion(datosResDatosRegistroCliente.direccion());
+    }
 }
