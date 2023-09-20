@@ -1,5 +1,6 @@
 package com.fimeco.fimeco.domain.empleado;
 
+import com.fimeco.fimeco.domain.producto.Producto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.List;
 
 @Entity(name = "Empleado")
 @Table(name = "empleados")
@@ -49,6 +51,9 @@ public class Empleado {
     private String clave;
     @Column(name = "activo")
     private boolean activo = true;
+
+    @ManyToMany(mappedBy = "empleados", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    private List<Producto> productos;
 
     public Empleado(DatosRegistroEmpleado datosRegistroEmpleado) {
         this.documento = datosRegistroEmpleado.documento();

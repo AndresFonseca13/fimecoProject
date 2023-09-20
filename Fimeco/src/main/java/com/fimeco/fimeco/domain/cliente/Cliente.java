@@ -1,13 +1,16 @@
 package com.fimeco.fimeco.domain.cliente;
 
 import com.fimeco.fimeco.domain.direccion.Direccion;
+import com.fimeco.fimeco.domain.pedido.Pedido;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name = "cliente")
+import java.util.List;
+
+@Table(name = "clientes")
 @Entity(name = "Cliente")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,4 +36,7 @@ public class Cliente {
     private String telefonoPersona;
     @Embedded
     private Direccion direccion;
+
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    private List<Pedido> pedidos;
 }
