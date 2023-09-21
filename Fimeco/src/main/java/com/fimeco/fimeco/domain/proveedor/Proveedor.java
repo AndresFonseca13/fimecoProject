@@ -33,4 +33,27 @@ public class Proveedor {
 
     @ManyToMany(mappedBy = "proveedores", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private List<Material> materiales;
+
+    public Proveedor(DatosRegistroProveedor datosRegistroProveedor) {
+        this.nombre = datosRegistroProveedor.nombre();
+        this.telefono = datosRegistroProveedor.telefono();
+        this.email = datosRegistroProveedor.email();
+        this.tipo = datosRegistroProveedor.tipo();
+        this.direccion = new Direccion(datosRegistroProveedor.direccion());
+    }
+
+    public void actualizarDatos(DatosActualizarProveedor datosActualizarProveedor) {
+        if (datosActualizarProveedor.nombre() != null) {
+            this.nombre = datosActualizarProveedor.nombre();
+        }
+        if (datosActualizarProveedor.telefono() != null) {
+            this.telefono = datosActualizarProveedor.telefono();
+        }
+        if (datosActualizarProveedor.email() != null) {
+            this.email = datosActualizarProveedor.email();
+        }
+        if (datosActualizarProveedor.direccion() != null) {
+            this.direccion = direccion.actualizarDatos(datosActualizarProveedor.direccion());
+        }
+    }
 }
