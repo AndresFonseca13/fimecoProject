@@ -10,4 +10,10 @@ public record DatosRespuestaCliente(
         String nombrePersona,
         DatosDireccion direccion
 ) {
+    public DatosRespuestaCliente(Cliente cliente) {
+        this(cliente.getId(), cliente.getNombre(), cliente.getTelefono(), cliente.getEmail(), cliente.getNombrePersona(),
+                new DatosDireccion(cliente.getDireccion().getCalle(), cliente.getDireccion().getCarrera(), cliente.getDireccion().getNumero(),
+                        cliente.getDireccion().getDepartamento(), cliente.getDireccion().getCiudad(), cliente.getDireccion().getComplemento(), cliente.getDireccion().getPais(),
+                        cliente.getDireccion().getDireccionCompleta()));
+    }
 }
