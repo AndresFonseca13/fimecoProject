@@ -1,5 +1,6 @@
 package com.fimeco.fimeco.domain.producto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fimeco.fimeco.domain.cliente.Cliente;
 import com.fimeco.fimeco.domain.empleado.Empleado;
 import com.fimeco.fimeco.domain.materiales.Material;
@@ -7,7 +8,9 @@ import com.fimeco.fimeco.domain.pedido.Pedido;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name = "Producto")
 @Table(name = "productos")
@@ -40,9 +43,9 @@ public class Producto {
 
 
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinTable(name = "producto_empleado",
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "productos_empleados",
             joinColumns = @JoinColumn(name = "producto_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "empleado_id", referencedColumnName = "id"))
-    private List<Empleado> empleados;
+    private Set<Empleado> empleados  = new HashSet<>();
 }

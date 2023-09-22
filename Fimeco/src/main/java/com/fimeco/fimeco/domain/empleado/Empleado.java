@@ -1,5 +1,6 @@
 package com.fimeco.fimeco.domain.empleado;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fimeco.fimeco.domain.producto.Producto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,7 +11,9 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name = "Empleado")
 @Table(name = "empleados")
@@ -52,22 +55,55 @@ public class Empleado {
     @Column(name = "activo")
     private boolean activo = true;
 
-    @ManyToMany(mappedBy = "empleados", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    private List<Producto> productos;
+//    @ManyToMany(mappedBy = "empleados", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+//    private List<Producto> productos;
+
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JsonBackReference
+    @JoinTable(name = "productos_empleados",
+            joinColumns = @JoinColumn(name = "empleado_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "producto_id", referencedColumnName = "id"))
+    private Set<Producto> productos  = new HashSet<>();
 
     public Empleado(DatosRegistroEmpleado datosRegistroEmpleado) {
         this.documento = datosRegistroEmpleado.documento();
         this.nombre = datosRegistroEmpleado.nombre();
         this.apellido = datosRegistroEmpleado.apellido();
-        this.fechaNacimiento = LocalDate.parse(datosRegistroEmpleado.fechaNacimiento());
+        this.fechaNacimiento = datosRegistroEmpleado.fechaNacimiento();
         this.edad = Period.between(this.fechaNacimiento, LocalDate.now()).getYears();
         this.telefono = datosRegistroEmpleado.telefono();
         this.telefono_emergencia = datosRegistroEmpleado.telefonoEmergencia();
         this.email = datosRegistroEmpleado.email();
-        this.rol = Rol.valueOf(datosRegistroEmpleado.rol());
-        this.fechaIngreso = LocalDate.parse(datosRegistroEmpleado.fechaIngreso());
+        this.rol = datosRegistroEmpleado.rol();
+        this.fechaIngreso = datosRegistroEmpleado.fechaIngreso();
         this.tiempoServicio = Period.between(this.fechaIngreso, LocalDate.now()).getMonths();
         this.usuario = datosRegistroEmpleado.usuario();
         this.clave = datosRegistroEmpleado.clave();
     }
+
+    public void actualizarDatos(DatosActualizarEmpleado datosActualizarEmpleado) {
+        if (datosActualizarEmpleado.nombre() != null) {
+            this.nombre = datosActualizarEmpleado.nombre();
+        }
+        if (datosActualizarEmpleado.apellido() != null) {
+            this.apellido = datosActualizarEmpleado.apellido();
+        }
+        if (datosActualizarEmpleado.telefono() != null) {
+            this.telefono = datosActualizarEmpleado.telefono();
+        }
+        if (datosActualizarEmpleado.telefonoEmergencia() != null) {
+            this.telefono_emergencia = datosActualizarEmpleado.telefonoEmergencia();
+        }
+        if (datosActualizarEmpleado.email() != null) {
+            this.email = datosActualizarEmpleado.email();
+        }
+        if (datosActualizarEmpleado.rol() != null) {
+            this.rol = datosActualizarEmpleado.rol();
+        }
+    }
+
+    public void desactivarEmpleado() {
+        this.activo = false;
+    }
+
 }
