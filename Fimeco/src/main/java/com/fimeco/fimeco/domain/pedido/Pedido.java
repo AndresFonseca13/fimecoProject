@@ -3,12 +3,20 @@ package com.fimeco.fimeco.domain.pedido;
 import com.fimeco.fimeco.domain.cliente.Cliente;
 import com.fimeco.fimeco.domain.producto.Producto;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Table(name = "pedidos")
 @Entity(name = "Pedido")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
