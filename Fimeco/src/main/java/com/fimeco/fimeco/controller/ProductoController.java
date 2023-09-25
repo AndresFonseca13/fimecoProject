@@ -1,7 +1,5 @@
 package com.fimeco.fimeco.controller;
 
-import com.fimeco.fimeco.domain.cliente.DatosListadoClientes;
-import com.fimeco.fimeco.domain.cliente.DatosRespuestaCliente;
 import com.fimeco.fimeco.domain.producto.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,5 +1,7 @@
 package com.fimeco.fimeco.domain.pedido;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fimeco.fimeco.domain.cliente.Cliente;
 import com.fimeco.fimeco.domain.producto.Producto;
 import jakarta.persistence.*;
@@ -41,6 +43,40 @@ public class Pedido {
     @JoinColumn(name = "cliente_id", referencedColumnName = "id")
     private Cliente cliente;
 
-    @OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonBackReference
     private List<Producto> productos;
+
+
+    public Pedido(DatosRegistroPedido datosRegistroPedido, Cliente cliente) {
+        this.fechaPedido = LocalDate.now();
+        this.fechaEntrega = datosRegistroPedido.fechaEntrega();
+        this.estado = datosRegistroPedido.estado();
+        this.descripcion = datosRegistroPedido.descripcion();
+        this.cantidad = datosRegistroPedido.cantidad();
+        this.precio = datosRegistroPedido.precio();
+        this.formaPago = datosRegistroPedido.formaPago();
+        this.cliente = cliente;
+    }
+
+    public void actualizarPedido(DatosActualizarPedido datosActualizarPedido){
+        if(datosActualizarPedido.fechaEntrega() != null){
+            this.fechaEntrega = datosActualizarPedido.fechaEntrega();
+        }
+        if(datosActualizarPedido.estado() != null){
+            this.estado = datosActualizarPedido.estado();
+        }
+        if(datosActualizarPedido.descripcion() != null){
+            this.descripcion = datosActualizarPedido.descripcion();
+        }
+        if(datosActualizarPedido.cantidad() != null){
+            this.cantidad = datosActualizarPedido.cantidad();
+        }
+        if(datosActualizarPedido.precio() != null){
+            this.precio = datosActualizarPedido.precio();
+        }
+        if(datosActualizarPedido.formaPago() != null){
+            this.formaPago = datosActualizarPedido.formaPago();
+        }
+    }
 }
