@@ -31,7 +31,10 @@ public class Proveedor {
     @Embedded
     private Direccion direccion;
 
-    @ManyToMany(mappedBy = "proveedores", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "material_proveedor",
+            joinColumns = @JoinColumn(name = "proveedor_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "material_id", referencedColumnName = "id"))
     private List<Material> materiales;
 
     public Proveedor(DatosRegistroProveedor datosRegistroProveedor) {
