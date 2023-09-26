@@ -1,5 +1,6 @@
 package com.fimeco.fimeco.domain.cliente;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fimeco.fimeco.domain.direccion.Direccion;
 import com.fimeco.fimeco.domain.pedido.Pedido;
 import jakarta.persistence.*;
@@ -38,6 +39,7 @@ public class Cliente {
     private Direccion direccion;
 
     @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JsonBackReference
     private List<Pedido> pedidos;
 
     public Cliente(DatosRegistroCliente datosResDatosRegistroCliente) {

@@ -43,11 +43,13 @@ public class Producto {
     @Column(name = "tipo_tanque")
     private String tipoTanque;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "pedido_id", referencedColumnName = "id")
+    @JsonBackReference
     private Pedido pedido;
 
     @ManyToMany(mappedBy = "productos",fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JsonBackReference
     private List<Material> materiales;
 
 

@@ -41,6 +41,7 @@ public class Pedido {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "cliente_id", referencedColumnName = "id")
+    @JsonBackReference
     private Cliente cliente;
 
     @OneToMany(mappedBy = "pedido", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
