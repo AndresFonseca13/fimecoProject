@@ -9,4 +9,10 @@ import java.util.List;
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     @Query("SELECT c FROM Cliente c WHERE c.direccion.pais = :pais")
     List<Cliente> getAllByPais(Pais pais);
+
+    Boolean existsByEmail(String email);
+
+    Boolean existsByUsuario(String usuario);
+
+    Boolean existsByTelefono(String telefono);
 }

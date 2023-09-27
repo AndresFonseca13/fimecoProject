@@ -19,8 +19,7 @@ public class EmpleadoController {
     @PostMapping
     public ResponseEntity<DatosRespuestaEmpleado> registrarEmpleado(@RequestBody @Valid DatosRegistroEmpleado datosRegistroEmpleado){
         Empleado empleado = empleadoRepository.save(new Empleado(datosRegistroEmpleado));
-        DatosRespuestaEmpleado datosRespuestaEmpleado = new DatosRespuestaEmpleado(empleado.getId(), empleado.getNombre(),
-                empleado.getApellido(), empleado.getTelefono(), empleado.getEmail(), empleado.getRol());
+        DatosRespuestaEmpleado datosRespuestaEmpleado = new DatosRespuestaEmpleado(empleado);
         return ResponseEntity.ok(datosRespuestaEmpleado);
     }
 
@@ -41,8 +40,7 @@ public class EmpleadoController {
     public ResponseEntity<DatosRespuestaEmpleado> actualizarEmpleado(@RequestBody DatosActualizarEmpleado datosActualizarEmpleado){
         Empleado empleado = empleadoRepository.getReferenceById(datosActualizarEmpleado.id());
         empleado.actualizarDatos(datosActualizarEmpleado);
-        DatosRespuestaEmpleado datosRespuestaEmpleado = new DatosRespuestaEmpleado(empleado.getId(), empleado.getNombre(),
-                empleado.getApellido(), empleado.getTelefono(), empleado.getEmail(), empleado.getRol());
+        DatosRespuestaEmpleado datosRespuestaEmpleado = new DatosRespuestaEmpleado(empleado);
         return ResponseEntity.ok(datosRespuestaEmpleado);
     }
 

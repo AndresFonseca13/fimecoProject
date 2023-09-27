@@ -34,8 +34,7 @@ public class ProductoController {
     public ResponseEntity<DatosRespuestaProducto> actualizarProducto(@RequestBody DatosActualizarProducto datosActualizarProducto){
         Producto producto = productoRepository.getReferenceById(datosActualizarProducto.id());
         producto.actualizarDatos(datosActualizarProducto);
-        return ResponseEntity.ok(new DatosRespuestaProducto(producto.getId(), producto.getNombre(), producto.getDescripcion(),
-                producto.getPrecio(), producto.getEstado(), producto.getUnidadMedida(), producto.getTiempoConstruccion(),producto.getTipoTanque(), producto.getPedido().getId()));
+        return ResponseEntity.ok(new DatosRespuestaProducto(producto));
     }
 
     @DeleteMapping("/{id}")

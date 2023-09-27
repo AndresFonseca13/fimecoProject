@@ -23,13 +23,20 @@ public class ClienteController {
 
     @PostMapping
     public ResponseEntity<DatosRespuestaCliente> registrarCliente(@RequestBody @Valid DatosRegistroCliente datosResDatosRegistroCliente){
+        if (clienteRepository.existsByEmail(datosResDatosRegistroCliente.email())){
+            throw new IllegalArgumentException("El email ya se encuentra registrado");
+        }else if (clienteRepository.existsByUsuario(datosResDatosRegistroCliente.usuario())){
+            throw new IllegalArgumentException("El usuario ya se encuentra registrado");
+        }else if (clienteRepository.existsByTelefono(datosResDatosRegistroCliente.telefono())){
+            throw new IllegalArgumentException("El telefono ya se encuentra registrado");
+        }else{
         Cliente cliente = clienteRepository.save(new Cliente(datosResDatosRegistroCliente));
         DatosRespuestaCliente datosRespuestaCliente = new DatosRespuestaCliente(cliente.getId(), cliente.getNombre(), cliente.getEmail(),
                 cliente.getTelefono(), cliente.getNombrePersona(),
                 new DatosDireccion(cliente.getDireccion().getCalle(), cliente.getDireccion().getCarrera(), cliente.getDireccion().getNumero(),
                 cliente.getDireccion().getDepartamento(), cliente.getDireccion().getCiudad(), cliente.getDireccion().getComplemento(), cliente.getDireccion().getPais(),
                 cliente.getDireccion().getDireccionCompleta()));
-        return ResponseEntity.ok(datosRespuestaCliente);
+        return ResponseEntity.ok(datosRespuestaCliente);}
     }
 
     @GetMapping
@@ -55,11 +62,7 @@ public class ClienteController {
     public ResponseEntity<DatosRespuestaCliente> actualizarCliente(@RequestBody @Valid DatosActualizarCliente datosActualizarCliente){
         Cliente cliente = clienteRepository.getReferenceById(datosActualizarCliente.id());
         cliente.actualizarDatos(datosActualizarCliente);
-        return ResponseEntity.ok(new DatosRespuestaCliente(cliente.getId(), cliente.getNombre(), cliente.getEmail(),
-                cliente.getTelefono(), cliente.getNombrePersona(),
-                new DatosDireccion(cliente.getDireccion().getCalle(), cliente.getDireccion().getCarrera(), cliente.getDireccion().getNumero(),
-                        cliente.getDireccion().getDepartamento(), cliente.getDireccion().getCiudad(), cliente.getDireccion().getComplemento(), cliente.getDireccion().getPais(),
-                        cliente.getDireccion().getDireccionCompleta())));
+        return ResponseEntity.ok(new DatosRespuestaCliente(cliente));
     }
 
     @DeleteMapping("/{id}")

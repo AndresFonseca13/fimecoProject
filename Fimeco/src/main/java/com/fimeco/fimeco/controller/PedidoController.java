@@ -28,9 +28,7 @@ public class PedidoController {
         Cliente cliente = clienteRepository.findById(datosRegistroPedido.clienteId()).orElseThrow();
         Pedido pedido = new Pedido(datosRegistroPedido, cliente);
         pedidoRepository.save(pedido);
-        return ResponseEntity.ok(new DatosRespuestaPedido(pedido.getId(), pedido.getFechaPedido(), pedido.getFechaEntrega(),
-                pedido.getEstado(), pedido.getDescripcion(), pedido.getCantidad(), pedido.getPrecio(), pedido.getFormaPago(),
-                pedido.getCliente().getId(), pedido.getCliente().getNombre()));
+        return ResponseEntity.ok(new DatosRespuestaPedido(pedido));
     }
 
     @GetMapping
@@ -42,9 +40,7 @@ public class PedidoController {
     @GetMapping("/{id}")
     public ResponseEntity<DatosRespuestaPedido> obtenerPedido(@PathVariable Long id){
         Pedido pedido = pedidoRepository.getReferenceById(id);
-        DatosRespuestaPedido datosRespuestaPedido = new DatosRespuestaPedido(pedido.getId(), pedido.getFechaPedido(), pedido.getFechaEntrega(),
-                pedido.getEstado(), pedido.getDescripcion(), pedido.getCantidad(), pedido.getPrecio(), pedido.getFormaPago(),
-                pedido.getCliente().getId(), pedido.getCliente().getNombre());
+        DatosRespuestaPedido datosRespuestaPedido = new DatosRespuestaPedido(pedido);
         return ResponseEntity.ok(datosRespuestaPedido);
     }
 
@@ -59,9 +55,7 @@ public class PedidoController {
     public ResponseEntity<DatosRespuestaPedido> actualizarPedido(@RequestBody @Valid DatosActualizarPedido datosActualizarPedido){
         Pedido pedido = pedidoRepository.getReferenceById(datosActualizarPedido.id());
         pedido.actualizarPedido(datosActualizarPedido);
-        return ResponseEntity.ok(new DatosRespuestaPedido(pedido.getId(), pedido.getFechaPedido(), pedido.getFechaEntrega(),
-                pedido.getEstado(), pedido.getDescripcion(), pedido.getCantidad(), pedido.getPrecio(), pedido.getFormaPago(),
-                pedido.getCliente().getId(), pedido.getCliente().getNombre()));
+        return ResponseEntity.ok(new DatosRespuestaPedido(pedido));
     }
 
     @DeleteMapping("/{id}")
