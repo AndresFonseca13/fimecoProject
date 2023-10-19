@@ -1,8 +1,5 @@
 package com.fimeco.fimeco.domain.empleado;
 
-import com.fimeco.fimeco.domain.empleado.Empleado;
-import com.fimeco.fimeco.domain.empleado.Rol;
-
 import java.time.LocalDate;
 
 public record DatosEmpleado(Long id,
@@ -14,13 +11,12 @@ public record DatosEmpleado(Long id,
                             String email,
                             LocalDate fechaNacimiento,
                             Integer edad,
-                            Rol rol,
+                            Cargo rol,
                             LocalDate fechaIngreso,
-                            Integer tiempoServicio,
-                            String usuario
-                            ) {
+                            Integer tiempoServicio
+) {
     public DatosEmpleado(Empleado empleado){
         this(empleado.getId(), empleado.getNombre(), empleado.getApellido(), empleado.getDocumento(), empleado.getTelefono(), empleado.getTelefono_emergencia(),
-                empleado.getEmail(), empleado.getFechaNacimiento(), empleado.getEdad(), empleado.getRol(), empleado.getFechaIngreso(), empleado.getTiempoServicio(), empleado.getUsuario());
+                empleado.getEmail(), empleado.getFechaNacimiento(), empleado.getEdad(), empleado.getCargo(), empleado.getFechaIngreso(), empleado.getTiempoServicio());
     }
 }

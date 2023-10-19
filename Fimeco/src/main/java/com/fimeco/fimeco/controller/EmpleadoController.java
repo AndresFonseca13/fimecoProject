@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/empleado")
+@RequestMapping("admin/empleado")
 public class EmpleadoController {
 
     @Autowired

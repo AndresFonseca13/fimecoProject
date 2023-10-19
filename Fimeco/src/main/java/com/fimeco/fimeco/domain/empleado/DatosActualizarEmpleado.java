@@ -6,5 +6,5 @@ public record DatosActualizarEmpleado(Long id,
                                       String telefono,
                                       String telefonoEmergencia,
                                       String email,
-                                      Rol rol) {
+                                      Cargo cargo) {
 }

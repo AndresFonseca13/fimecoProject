@@ -1,27 +1,28 @@
 package com.fimeco.fimeco.domain.empleado;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fimeco.fimeco.domain.Role.Role;
 import com.fimeco.fimeco.domain.producto.Producto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity(name = "Empleado")
 @Table(name = "empleados")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class Empleado {
+public class Empleado{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,17 +42,13 @@ public class Empleado {
     private String telefono_emergencia;
     @Column(name = "email", unique = true)
     private String email;
-    @Column(name = "rol")
+    @Column(name = "cargo")
     @Enumerated(EnumType.STRING)
-    private Rol rol;
+    private Cargo cargo;
     @Column(name = "fecha_ingreso")
     private LocalDate fechaIngreso;
     @Column(name = "tiempo_servicio")
     private Integer tiempoServicio;
-    @Column(name = "usuario", unique = true)
-    private String usuario;
-    @Column(name = "clave")
-    private String clave;
     @Column(name = "activo")
     private boolean activo = true;
 
@@ -65,6 +62,7 @@ public class Empleado {
             inverseJoinColumns = @JoinColumn(name = "producto_id", referencedColumnName = "id"))
     private Set<Producto> productos  = new HashSet<>();
 
+
     public Empleado(DatosRegistroEmpleado datosRegistroEmpleado) {
         this.documento = datosRegistroEmpleado.documento();
         this.nombre = datosRegistroEmpleado.nombre();
@@ -74,11 +72,9 @@ public class Empleado {
         this.telefono = datosRegistroEmpleado.telefono();
         this.telefono_emergencia = datosRegistroEmpleado.telefonoEmergencia();
         this.email = datosRegistroEmpleado.email();
-        this.rol = datosRegistroEmpleado.rol();
+        this.cargo = datosRegistroEmpleado.cargo();
         this.fechaIngreso = datosRegistroEmpleado.fechaIngreso();
         this.tiempoServicio = Period.between(this.fechaIngreso, LocalDate.now()).getMonths();
-        this.usuario = datosRegistroEmpleado.usuario();
-        this.clave = datosRegistroEmpleado.clave();
     }
 
     public void actualizarDatos(DatosActualizarEmpleado datosActualizarEmpleado) {
@@ -97,11 +93,10 @@ public class Empleado {
         if (datosActualizarEmpleado.email() != null) {
             this.email = datosActualizarEmpleado.email();
         }
-        if (datosActualizarEmpleado.rol() != null) {
-            this.rol = datosActualizarEmpleado.rol();
+        if (datosActualizarEmpleado.cargo() != null) {
+            this.cargo = datosActualizarEmpleado.cargo();
         }
     }
-
     public void desactivarEmpleado() {
         this.activo = false;
     }

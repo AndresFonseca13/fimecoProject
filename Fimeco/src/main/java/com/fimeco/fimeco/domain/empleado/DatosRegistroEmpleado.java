@@ -1,5 +1,6 @@
 package com.fimeco.fimeco.domain.empleado;
 
+import com.fimeco.fimeco.domain.Role.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -25,12 +26,7 @@ public record DatosRegistroEmpleado(@NotBlank
                                     @Email
                                     String email,
                                     @NotNull
-                                    Rol rol,
+                                    Cargo cargo,
                                     @NotNull
-                                    LocalDate fechaIngreso,
-                                    @NotBlank
-                                    String usuario,
-                                    @NotBlank
-                                    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{6,}$")
-                                    String clave) {
+                                    LocalDate fechaIngreso){
 }

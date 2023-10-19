@@ -1,6 +1,6 @@
 package com.fimeco.fimeco.domain.empleado;
 
-public enum Rol {
+public enum Cargo {
     ADMIN,
     SOLDADOR,
     AYUDANTE,
