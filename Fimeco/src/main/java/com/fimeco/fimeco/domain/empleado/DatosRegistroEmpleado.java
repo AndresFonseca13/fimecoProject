@@ -1,6 +1,7 @@
 package com.fimeco.fimeco.domain.empleado;
 
 import com.fimeco.fimeco.domain.Role.Role;
+import com.fimeco.fimeco.domain.user.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -28,5 +29,7 @@ public record DatosRegistroEmpleado(@NotBlank
                                     @NotNull
                                     Cargo cargo,
                                     @NotNull
-                                    LocalDate fechaIngreso){
+                                    LocalDate fechaIngreso,
+                                    @NotNull
+                                    Integer user_id){
 }

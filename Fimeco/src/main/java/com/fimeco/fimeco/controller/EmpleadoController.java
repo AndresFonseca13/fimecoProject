@@ -1,6 +1,8 @@
 package com.fimeco.fimeco.controller;
 
 import com.fimeco.fimeco.domain.empleado.*;
+import com.fimeco.fimeco.domain.user.User;
+import com.fimeco.fimeco.domain.user.UserRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +18,13 @@ public class EmpleadoController {
 
     @Autowired
     private EmpleadoRepository empleadoRepository;
+
+    @Autowired
+    private UserRepository userRepository;
     @PostMapping
     public ResponseEntity<DatosRespuestaEmpleado> registrarEmpleado(@RequestBody @Valid DatosRegistroEmpleado datosRegistroEmpleado){
-        Empleado empleado = empleadoRepository.save(new Empleado(datosRegistroEmpleado));
+        User user = userRepository.findById(datosRegistroEmpleado.user_id()).orElseThrow();
+        Empleado empleado = empleadoRepository.save(new Empleado(datosRegistroEmpleado, user));
         DatosRespuestaEmpleado datosRespuestaEmpleado = new DatosRespuestaEmpleado(empleado);
         return ResponseEntity.ok(datosRespuestaEmpleado);
     }

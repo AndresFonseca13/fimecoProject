@@ -3,6 +3,8 @@ package com.fimeco.fimeco.controller;
 import com.fimeco.fimeco.domain.cliente.*;
 import com.fimeco.fimeco.domain.direccion.DatosDireccion;
 import com.fimeco.fimeco.domain.direccion.Pais;
+import com.fimeco.fimeco.domain.user.User;
+import com.fimeco.fimeco.domain.user.UserRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,22 +17,24 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cliente")
+@RequestMapping("customer/cliente")
 public class ClienteController {
 
     @Autowired
     private ClienteRepository clienteRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @PostMapping
     public ResponseEntity<DatosRespuestaCliente> registrarCliente(@RequestBody @Valid DatosRegistroCliente datosResDatosRegistroCliente){
         if (clienteRepository.existsByEmail(datosResDatosRegistroCliente.email())){
             throw new IllegalArgumentException("El email ya se encuentra registrado");
-        }else if (clienteRepository.existsByUsuario(datosResDatosRegistroCliente.usuario())){
-            throw new IllegalArgumentException("El usuario ya se encuentra registrado");
-        }else if (clienteRepository.existsByTelefono(datosResDatosRegistroCliente.telefono())){
+        } else if (clienteRepository.existsByTelefono(datosResDatosRegistroCliente.telefono())){
             throw new IllegalArgumentException("El telefono ya se encuentra registrado");
         }else{
-        Cliente cliente = clienteRepository.save(new Cliente(datosResDatosRegistroCliente));
+            User user = userRepository.findById(datosResDatosRegistroCliente.user_id()).orElseThrow();
+        Cliente cliente = clienteRepository.save(new Cliente(datosResDatosRegistroCliente, user));
         DatosRespuestaCliente datosRespuestaCliente = new DatosRespuestaCliente(cliente.getId(), cliente.getNombre(), cliente.getEmail(),
                 cliente.getTelefono(), cliente.getNombrePersona(),
                 new DatosDireccion(cliente.getDireccion().getCalle(), cliente.getDireccion().getCarrera(), cliente.getDireccion().getNumero(),

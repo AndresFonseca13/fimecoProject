@@ -14,16 +14,14 @@ public record DatosRegistroCliente(@NotNull
                                    @NotNull
                                    @Email(message = "El correo no cumple con la estructura adecuada")
                                    String email,
-                                   @NotNull
-                                   String usuario,
-                                   @NotNull
-                                   @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{6,}$", message = "La clave debe ser de al menos 6 caracteres y debe contener al menos una mayuscula, una minuscula y un numero")
-                                   String clave,
 
                                    String nombrePersona,
 
                                    @Pattern(regexp = "^[0-9]{1,15}$")
                                    String telefonoPersona,
                                    @Valid
-                                   DatosDireccion direccion) {
+                                   DatosDireccion direccion,
+
+                                   @NotNull
+                                   Integer user_id) {
 }

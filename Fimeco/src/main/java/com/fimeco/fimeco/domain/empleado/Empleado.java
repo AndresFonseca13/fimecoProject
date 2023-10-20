@@ -3,6 +3,7 @@ package com.fimeco.fimeco.domain.empleado;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fimeco.fimeco.domain.Role.Role;
 import com.fimeco.fimeco.domain.producto.Producto;
+import com.fimeco.fimeco.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,35 +23,51 @@ import java.util.Set;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class Empleado{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "documento", unique = true)
     private String documento;
+
     @Column(name = "nombre")
     private String nombre;
+
     @Column(name = "apellido")
     private String apellido;
+
     @Column(name = "fecha_nacimiento")
     private LocalDate fechaNacimiento;
+
     @Column(name = "edad")
     private Integer edad;
+
     @Column(name = "telefono")
     private String telefono;
+
     @Column(name = "telefono_emergencia")
     private String telefono_emergencia;
+
     @Column(name = "email", unique = true)
     private String email;
+
     @Column(name = "cargo")
     @Enumerated(EnumType.STRING)
     private Cargo cargo;
+
     @Column(name = "fecha_ingreso")
     private LocalDate fechaIngreso;
+
     @Column(name = "tiempo_servicio")
     private Integer tiempoServicio;
+
     @Column(name = "activo")
     private boolean activo = true;
+
+    @OneToOne
+    private User user;
 
 //    @ManyToMany(mappedBy = "empleados", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 //    private List<Producto> productos;
@@ -63,7 +80,7 @@ public class Empleado{
     private Set<Producto> productos  = new HashSet<>();
 
 
-    public Empleado(DatosRegistroEmpleado datosRegistroEmpleado) {
+    public Empleado(DatosRegistroEmpleado datosRegistroEmpleado, User user) {
         this.documento = datosRegistroEmpleado.documento();
         this.nombre = datosRegistroEmpleado.nombre();
         this.apellido = datosRegistroEmpleado.apellido();
@@ -75,6 +92,7 @@ public class Empleado{
         this.cargo = datosRegistroEmpleado.cargo();
         this.fechaIngreso = datosRegistroEmpleado.fechaIngreso();
         this.tiempoServicio = Period.between(this.fechaIngreso, LocalDate.now()).getMonths();
+        this.user = user;
     }
 
     public void actualizarDatos(DatosActualizarEmpleado datosActualizarEmpleado) {

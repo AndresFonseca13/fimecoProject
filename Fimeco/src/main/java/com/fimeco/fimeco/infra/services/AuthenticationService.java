@@ -50,6 +50,18 @@ public class AuthenticationService {
         return userRepository.save(new User(0, username, encodedPassword, authorities));
     }
 
+    public User registerCustomer(String username, String password){
+
+        String encodedPassword = passwordEncoder.encode(password);
+        Role userRole = roleRepository.findByAuthority("CLIENTE").get();
+
+        Set<Role> authorities = new HashSet<>();
+
+        authorities.add(userRole);
+
+        return userRepository.save(new User(0, username, encodedPassword, authorities));
+    }
+
     public LoginResponseDTO loginUser(String username, String password){
 
         try{

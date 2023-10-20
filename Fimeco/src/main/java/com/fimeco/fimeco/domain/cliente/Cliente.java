@@ -3,6 +3,7 @@ package com.fimeco.fimeco.domain.cliente;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fimeco.fimeco.domain.direccion.Direccion;
 import com.fimeco.fimeco.domain.pedido.Pedido;
+import com.fimeco.fimeco.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,27 +28,23 @@ public class Cliente {
     private String telefono;
     @Column(name = "email",unique = true)
     private String email;
-    @Column(name = "usuario",unique = true)
-    private String usuario;
-    @Column(name = "clave")
-    private String clave;
     @Column(name = "persona")
     private String nombrePersona;
     @Column(name = "telefono_persona")
     private String telefonoPersona;
     @Embedded
     private Direccion direccion;
+    @OneToOne
+    private User user;
 
     @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JsonBackReference
     private List<Pedido> pedidos;
 
-    public Cliente(DatosRegistroCliente datosResDatosRegistroCliente) {
+    public Cliente(DatosRegistroCliente datosResDatosRegistroCliente, User user) {
         this.nombre = datosResDatosRegistroCliente.nombre();
         this.telefono = datosResDatosRegistroCliente.telefono();
         this.email = datosResDatosRegistroCliente.email();
-        this.usuario = datosResDatosRegistroCliente.usuario();
-        this.clave = datosResDatosRegistroCliente.clave();
         this.nombrePersona = datosResDatosRegistroCliente.nombrePersona();
         this.telefonoPersona = datosResDatosRegistroCliente.telefonoPersona();
         this.direccion = new Direccion(datosResDatosRegistroCliente.direccion());

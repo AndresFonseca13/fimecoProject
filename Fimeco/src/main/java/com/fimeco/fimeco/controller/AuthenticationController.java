@@ -20,6 +20,11 @@ public class AuthenticationController {
         return authenticationService.registerUser(body.getUsername(), body.getPassword());
     }
 
+    @PostMapping("/register_customer")
+    public User registerCustomer(@RequestBody RegistrationDTO body){
+        return authenticationService.registerCustomer(body.getUsername(), body.getPassword());
+    }
+
     @PostMapping("/login")
     public LoginResponseDTO loginUser(@RequestBody RegistrationDTO body){
         return authenticationService.loginUser(body.getUsername(), body.getPassword());
