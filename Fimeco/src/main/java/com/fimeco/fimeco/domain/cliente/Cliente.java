@@ -48,6 +48,7 @@ public class Cliente {
         this.nombrePersona = datosResDatosRegistroCliente.nombrePersona();
         this.telefonoPersona = datosResDatosRegistroCliente.telefonoPersona();
         this.direccion = new Direccion(datosResDatosRegistroCliente.direccion());
+        this.user = user;
     }
 
     public void actualizarDatos(DatosActualizarCliente datosActualizarCliente) {

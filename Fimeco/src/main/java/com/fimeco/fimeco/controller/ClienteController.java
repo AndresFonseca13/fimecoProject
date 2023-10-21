@@ -27,20 +27,26 @@ public class ClienteController {
     private UserRepository userRepository;
 
     @PostMapping
-    public ResponseEntity<DatosRespuestaCliente> registrarCliente(@RequestBody @Valid DatosRegistroCliente datosResDatosRegistroCliente){
-        if (clienteRepository.existsByEmail(datosResDatosRegistroCliente.email())){
-            throw new IllegalArgumentException("El email ya se encuentra registrado");
-        } else if (clienteRepository.existsByTelefono(datosResDatosRegistroCliente.telefono())){
-            throw new IllegalArgumentException("El telefono ya se encuentra registrado");
-        }else{
-            User user = userRepository.findById(datosResDatosRegistroCliente.user_id()).orElseThrow();
-        Cliente cliente = clienteRepository.save(new Cliente(datosResDatosRegistroCliente, user));
-        DatosRespuestaCliente datosRespuestaCliente = new DatosRespuestaCliente(cliente.getId(), cliente.getNombre(), cliente.getEmail(),
-                cliente.getTelefono(), cliente.getNombrePersona(),
-                new DatosDireccion(cliente.getDireccion().getCalle(), cliente.getDireccion().getCarrera(), cliente.getDireccion().getNumero(),
-                cliente.getDireccion().getDepartamento(), cliente.getDireccion().getCiudad(), cliente.getDireccion().getComplemento(), cliente.getDireccion().getPais(),
-                cliente.getDireccion().getDireccionCompleta()));
-        return ResponseEntity.ok(datosRespuestaCliente);}
+    public ResponseEntity<DatosRespuestaCliente> registrarCliente(@RequestBody @Valid DatosRegistroCliente datosRegistroCliente){
+        try{
+            if (clienteRepository.existsByEmail(datosRegistroCliente.email())){
+                throw new IllegalArgumentException("El email ya se encuentra registrado");
+            } else if (clienteRepository.existsByTelefono(datosRegistroCliente.telefono())){
+                throw new IllegalArgumentException("El telefono ya se encuentra registrado");
+            }
+            User user = userRepository.findById(datosRegistroCliente.user_id()).orElseThrow();
+            System.out.println(user.getUsername());
+            System.out.println(user.getUserId());
+            Cliente cliente = clienteRepository.save(new Cliente(datosRegistroCliente, user));
+            DatosRespuestaCliente datosRespuestaCliente = new DatosRespuestaCliente(cliente.getId(), cliente.getNombre(), cliente.getEmail(),
+                    cliente.getTelefono(), cliente.getNombrePersona(),
+                    new DatosDireccion(cliente.getDireccion().getCalle(), cliente.getDireccion().getCarrera(), cliente.getDireccion().getNumero(),
+                            cliente.getDireccion().getDepartamento(), cliente.getDireccion().getCiudad(), cliente.getDireccion().getComplemento(), cliente.getDireccion().getPais(),
+                            cliente.getDireccion().getDireccionCompleta()));
+            return ResponseEntity.ok(datosRespuestaCliente);
+        }catch (Exception e){
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping
