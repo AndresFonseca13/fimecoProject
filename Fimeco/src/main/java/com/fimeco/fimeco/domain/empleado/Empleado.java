@@ -67,6 +67,7 @@ public class Empleado{
     private boolean activo = true;
 
     @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
 //    @ManyToMany(mappedBy = "empleados", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)

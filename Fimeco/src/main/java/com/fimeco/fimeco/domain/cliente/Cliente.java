@@ -34,7 +34,9 @@ public class Cliente {
     private String telefonoPersona;
     @Embedded
     private Direccion direccion;
+
     @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
