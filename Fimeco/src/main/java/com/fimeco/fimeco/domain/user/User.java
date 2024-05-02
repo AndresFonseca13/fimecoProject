@@ -50,6 +50,14 @@ public class User implements UserDetails {
         this.authorities = authorities;
     }
 
+    public void changeRole(Role role){
+        this.authorities.add(role);
+    }
+
+    public void removeRole(Role role){
+        this.authorities.remove(role);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.authorities;

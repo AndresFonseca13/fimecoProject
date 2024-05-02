@@ -95,4 +95,20 @@ public class AuthenticationService {
             return ResponseEntity.badRequest().body("Error authenticating user, check credentials");
         }
     }
+
+    public ResponseEntity<?> addRole(String username, String role){
+        User user = userRepository.findByUsername(username).get();
+        Role roleAdd = roleRepository.findByAuthority(role).get();
+        user.changeRole(roleAdd);
+        userRepository.save(user);
+        return ResponseEntity.ok().body("New Role added to user");
+    }
+
+    public ResponseEntity<?> removeRole(String username, String role){
+        User user = userRepository.findByUsername(username).get();
+        Role roleToRemove = roleRepository.findByAuthority(role).get();
+        user.removeRole(roleToRemove);
+        userRepository.save(user);
+        return ResponseEntity.ok().body("Role removed from user");
+    }
 }

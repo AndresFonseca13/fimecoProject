@@ -1,6 +1,6 @@
 package com.fimeco.fimeco.controller;
 
-import com.fimeco.fimeco.domain.user.LoginResponseDTO;
+
 import com.fimeco.fimeco.domain.user.RegistrationDTO;
 import com.fimeco.fimeco.domain.user.User;
 import com.fimeco.fimeco.infra.services.AuthenticationService;
@@ -30,4 +30,6 @@ public class AuthenticationController {
     public ResponseEntity<?> loginUser(@RequestBody RegistrationDTO body){
         return authenticationService.loginUser(body.getUsername(), body.getPassword());
     }
+
+
 }

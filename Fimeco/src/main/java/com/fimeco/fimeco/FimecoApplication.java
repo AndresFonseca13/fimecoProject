@@ -27,6 +27,7 @@ public class FimecoApplication {
 			Role adminRole = rolRepository.save(new Role("ADMIN"));
 			rolRepository.save(new Role("USER"));
 			rolRepository.save(new Role("CLIENTE"));
+			rolRepository.save(new Role("EMPLEADO"));
 
 			Set<Role> roles = new HashSet<>();
 			roles.add(adminRole);

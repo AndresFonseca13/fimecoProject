@@ -56,6 +56,8 @@ public class SecurityConfiguration {
                     auth.requestMatchers("/auth/**").permitAll();
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
                     auth.requestMatchers("/customer/**").hasAnyRole("ADMIN", "CLIENTE");
+                    auth.requestMatchers("/proveedor/**").hasAnyRole("ADMIN");
+                    auth.requestMatchers("/empleado/**").hasAnyRole("ADMIN", "USER");
                     auth.requestMatchers("/user/**").hasAnyRole("ADMIN", "USER");
                     auth.anyRequest().authenticated();
                 });

@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("empleado/empleado")
+@RequestMapping("/empleado")
 public class EmpleadoController {
 
     @Autowired
@@ -23,7 +23,7 @@ public class EmpleadoController {
     private UserRepository userRepository;
     @PostMapping
     public ResponseEntity<DatosRespuestaEmpleado> registrarEmpleado(@RequestBody @Valid DatosRegistroEmpleado datosRegistroEmpleado){
-        User user = userRepository.findById(datosRegistroEmpleado.user_id()).orElseThrow();
+        User user = userRepository.findByUsername(datosRegistroEmpleado.username()).orElseThrow();
         Empleado empleado = empleadoRepository.save(new Empleado(datosRegistroEmpleado, user));
         DatosRespuestaEmpleado datosRespuestaEmpleado = new DatosRespuestaEmpleado(empleado);
         return ResponseEntity.ok(datosRespuestaEmpleado);

@@ -31,5 +31,5 @@ public record DatosRegistroEmpleado(@NotBlank
                                     @NotNull
                                     LocalDate fechaIngreso,
                                     @NotNull
-                                    Integer user_id){
+                                    String username){
 }
