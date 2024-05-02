@@ -37,14 +37,18 @@ public class User implements UserDetails {
         this.authorities = new HashSet<Role>();
     }
 
+    public User(String username, String password, Set<Role> authorities){
+        this.username = username;
+        this.password = password;
+        this.authorities = authorities;
+    }
+
     public User(Integer userId, String username, String password, Set<Role> authorities){
         this.userId = userId;
         this.username = username;
         this.password = password;
         this.authorities = authorities;
     }
-
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

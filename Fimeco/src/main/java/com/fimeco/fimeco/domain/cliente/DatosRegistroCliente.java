@@ -11,6 +11,7 @@ public record DatosRegistroCliente(@NotNull
                                    @NotNull
                                    @Pattern(regexp = "^[0-9]{1,15}$", message = "El telefono no cumple con la estructura adecuada")
                                    String telefono,
+
                                    @NotNull
                                    @Email(message = "El correo no cumple con la estructura adecuada")
                                    String email,
@@ -19,6 +20,7 @@ public record DatosRegistroCliente(@NotNull
 
                                    @Pattern(regexp = "^[0-9]{1,15}$")
                                    String telefonoPersona,
+
                                    @Valid
                                    DatosDireccion direccion,
 
