@@ -1,6 +1,5 @@
 package com.fimeco.fimeco.infra.services;
 
-import com.fimeco.fimeco.domain.empleado.EmpleadoRepository;
 import com.fimeco.fimeco.domain.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
