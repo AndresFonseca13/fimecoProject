@@ -31,7 +31,7 @@ public class Employee {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "lastName")
+    @Column(name = "last_name")
     private String lastName;
 
     @Column(name = "birthday")
@@ -65,9 +65,6 @@ public class Employee {
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private User user;
-
-//    @ManyToMany(mappedBy = "empleados", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-//    private List<Producto> productos;
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JsonBackReference

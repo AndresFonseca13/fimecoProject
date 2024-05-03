@@ -19,10 +19,10 @@ public class Pqrs {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String asunto;
-    private String mensaje;
+    private String header;
+    private String message;
     @Enumerated(EnumType.STRING)
-    private Tipo tipo;
+    private Type type;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
