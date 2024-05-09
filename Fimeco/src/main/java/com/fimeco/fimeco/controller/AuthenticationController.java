@@ -1,10 +1,11 @@
 package com.fimeco.fimeco.controller;
 
 
-import com.fimeco.fimeco.domain.user.RegistrationDTO;
-import com.fimeco.fimeco.domain.user.User;
-import com.fimeco.fimeco.infra.services.AuthenticationService;
+import com.fimeco.fimeco.domain.user.*;
+import com.fimeco.fimeco.infra.services.UserDetailServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,22 +15,23 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController {
 
     @Autowired
-    private AuthenticationService authenticationService;
+    private UserDetailServiceImpl userDetailService;
 
-    @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody RegistrationDTO body){
-        return authenticationService.registerUser(body.getUsername(), body.getPassword());
+    @PostMapping("/sign-up")
+    public ResponseEntity<AuthResponse> register(@RequestBody @Valid AuthCreateUserRequest authCreateUserRequest){
+        return new ResponseEntity<>(this.userDetailService.createUser(authCreateUserRequest), HttpStatus.CREATED);
     }
 
-    @PostMapping("/register_customer")
-    public User registerCustomer(@RequestBody RegistrationDTO body){
-        return authenticationService.registerCustomer(body.getUsername(), body.getPassword());
+    @PostMapping("/register-customer")
+    public AuthResponse registerCustomer(@RequestBody CreateUserRequest body){
+        return userDetailService.createNormalUSer(body);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody RegistrationDTO body){
-        return authenticationService.loginUser(body.getUsername(), body.getPassword());
+    @PostMapping("/log-in")
+    public ResponseEntity<AuthResponse> login(@RequestBody @Valid AuthLoginRequest userRequest){
+        return new ResponseEntity<>(this.userDetailService.login(userRequest), HttpStatus.OK);
     }
+
 
 
 }

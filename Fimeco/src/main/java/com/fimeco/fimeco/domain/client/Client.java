@@ -3,7 +3,7 @@ package com.fimeco.fimeco.domain.client;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fimeco.fimeco.domain.address.Address;
 import com.fimeco.fimeco.domain.order.Order;
-import com.fimeco.fimeco.domain.user.User;
+import com.fimeco.fimeco.domain.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,20 +37,20 @@ public class Client {
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private User user;
+    private UserEntity userEntity;
 
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JsonBackReference
     private List<Order> orders;
 
-    public Client(DataRegisterClient dataRegisterClient, User user) {
+    public Client(DataRegisterClient dataRegisterClient, UserEntity userEntity) {
         this.name = dataRegisterClient.name();
         this.phone = dataRegisterClient.phone();
         this.email = dataRegisterClient.email();
         this.namePerson = dataRegisterClient.namePerson();
         this.phonePerson = dataRegisterClient.phonePerson();
         this.address = new Address(dataRegisterClient.address());
-        this.user = user;
+        this.userEntity = userEntity;
     }
 
     public void dataUpdate(DataUpdateClient dataUpdateClient) {

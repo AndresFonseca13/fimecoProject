@@ -1,7 +1,7 @@
 package com.fimeco.fimeco.domain.pqrs;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fimeco.fimeco.domain.user.User;
+import com.fimeco.fimeco.domain.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,7 +27,7 @@ public class Pqrs {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     @JsonBackReference
-    private User user;
+    private UserEntity userEntity;
 
 
 }

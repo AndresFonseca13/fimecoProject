@@ -1,7 +1,7 @@
 package com.fimeco.fimeco.controller;
 
 import com.fimeco.fimeco.domain.employee.*;
-import com.fimeco.fimeco.domain.user.User;
+import com.fimeco.fimeco.domain.user.UserEntity;
 import com.fimeco.fimeco.domain.user.UserRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -23,8 +23,8 @@ public class EmployeeController {
     private UserRepository userRepository;
     @PostMapping
     public ResponseEntity<DataResponseEmployee> registerEmployee(@RequestBody @Valid DataRegisterEmployee dataRegisterEmployee){
-        User user = userRepository.findByUsername(dataRegisterEmployee.username()).orElseThrow();
-        Employee employee = employeeRepository.save(new Employee(dataRegisterEmployee, user));
+        UserEntity userEntity = userRepository.findByUsername(dataRegisterEmployee.username()).orElseThrow();
+        Employee employee = employeeRepository.save(new Employee(dataRegisterEmployee, userEntity));
         DataResponseEmployee dataResponseEmployee = new DataResponseEmployee(employee);
         return ResponseEntity.ok(dataResponseEmployee);
     }

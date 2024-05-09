@@ -3,7 +3,7 @@ package com.fimeco.fimeco.controller;
 import com.fimeco.fimeco.domain.client.*;
 import com.fimeco.fimeco.domain.address.DataAddress;
 import com.fimeco.fimeco.domain.address.Country;
-import com.fimeco.fimeco.domain.user.User;
+import com.fimeco.fimeco.domain.user.UserEntity;
 import com.fimeco.fimeco.domain.user.UserRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -34,10 +34,10 @@ public class ClientController {
             } else if (clientRepository.existsByPhone(dataRegisterClient.phone())){
                 throw new IllegalArgumentException("El phone ya se encuentra registrado");
             }
-            User user = userRepository.findById(dataRegisterClient.user_id()).orElseThrow();
-            System.out.println(user.getUsername());
-            System.out.println(user.getUserId());
-            Client client = clientRepository.save(new Client(dataRegisterClient, user));
+            UserEntity userEntity = userRepository.findById(dataRegisterClient.user_id()).orElseThrow();
+            System.out.println(userEntity.getUsername());
+            System.out.println(userEntity.getUserId());
+            Client client = clientRepository.save(new Client(dataRegisterClient, userEntity));
             DataResponseClient dataResponseClient = new DataResponseClient(client.getId(), client.getName(), client.getEmail(),
                     client.getPhone(), client.getNamePerson(),
                     new DataAddress(client.getAddress().getStreet(), client.getAddress().getRace(), client.getAddress().getNumber(),

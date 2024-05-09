@@ -2,7 +2,7 @@ package com.fimeco.fimeco.domain.employee;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fimeco.fimeco.domain.product.Product;
-import com.fimeco.fimeco.domain.user.User;
+import com.fimeco.fimeco.domain.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -64,7 +64,7 @@ public class Employee {
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    private User user;
+    private UserEntity userEntity;
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JsonBackReference
@@ -74,7 +74,7 @@ public class Employee {
     private Set<Product> products = new HashSet<>();
 
 
-    public Employee(DataRegisterEmployee dataRegisterEmployee, User user) {
+    public Employee(DataRegisterEmployee dataRegisterEmployee, UserEntity userEntity) {
         this.document = dataRegisterEmployee.document();
         this.name = dataRegisterEmployee.name();
         this.lastName = dataRegisterEmployee.lastName();
@@ -86,7 +86,7 @@ public class Employee {
         this.position = dataRegisterEmployee.position();
         this.dateEntry = dataRegisterEmployee.dateEntry();
         this.serviceTime = Period.between(this.dateEntry, LocalDate.now()).getMonths();
-        this.user = user;
+        this.userEntity = userEntity;
     }
 
     public void actualizarDatos(DataUpdateEmployee dataUpdateEmployee) {

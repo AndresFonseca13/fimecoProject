@@ -1,40 +1,31 @@
 package com.fimeco.fimeco.domain.Role;
 
+import com.fimeco.fimeco.domain.permission.Permission;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.HashSet;
+import java.util.Set;
+
+@Setter
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "roles")
-public class Role implements GrantedAuthority {
-    @Getter
+public class Role{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_id")
-    private Integer roleId;
+    private Long id;
 
-    private String authority;
+    @Column(name = "role_name")
+    @Enumerated(EnumType.STRING)
+    private RoleEnum roleEnum;
 
-    public Role(){super();}
-    public Role(String authority) {
-        this.authority = authority;
-    }
-
-    public Role(Integer roleId, String authority){
-        this.roleId = roleId;
-        this.authority = authority;
-    }
-
-    @Override
-    public String getAuthority() {
-        return this.authority;
-    }
-
-    public void setAuthority(String authority){
-        this.authority = authority;
-    }
-
-    public void setRoleId(Integer roleId){
-        this.roleId = roleId;
-    }
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "role_permissions", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
+    private Set<Permission> permissionsList = new HashSet<>();
 }
