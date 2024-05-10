@@ -12,22 +12,22 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class TratadorDeErrores {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity trataError404(){return ResponseEntity.notFound().build();}
+    public ResponseEntity<?> trataError404(){return ResponseEntity.notFound().build();}
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity tratarError400(MethodArgumentNotValidException e){
+    public ResponseEntity<?> tratarError400(MethodArgumentNotValidException e){
         var errores = e.getFieldErrors().stream().map(DatosErrorValidacion::new).toList();
         return ResponseEntity.badRequest().body(errores);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity errorHandlerValidacionesDeIntegridad(Exception e){
+    public ResponseEntity<?> errorHandlerValidacionesDeIntegridad(Exception e){
         String error = e.getMessage();
         return ResponseEntity.badRequest().body(error);
     }
 
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity errorHandlerValidacionesDeNegocios(Exception e){
+    public ResponseEntity<?> errorHandlerValidacionesDeNegocios(Exception e){
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 

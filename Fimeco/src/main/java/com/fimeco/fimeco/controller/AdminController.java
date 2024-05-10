@@ -1,9 +1,7 @@
 package com.fimeco.fimeco.controller;
 
 import com.fimeco.fimeco.domain.user.RoleDTO;
-import com.fimeco.fimeco.domain.user.UserEntity;
 import com.fimeco.fimeco.infra.services.UserDetailServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,8 +9,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
-    private UserDetailServiceImpl userDetailService;
+    private final UserDetailServiceImpl userDetailService;
+
+    public AdminController(UserDetailServiceImpl userDetailService) {
+        this.userDetailService = userDetailService;
+    }
 
     @PostMapping("/add_Role")
     public ResponseEntity<?> addRole(@RequestBody RoleDTO roleDTO){

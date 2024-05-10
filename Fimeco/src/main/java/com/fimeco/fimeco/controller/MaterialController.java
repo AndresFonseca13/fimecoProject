@@ -3,7 +3,6 @@ package com.fimeco.fimeco.controller;
 import com.fimeco.fimeco.domain.materials.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -14,8 +13,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/material")
 public class MaterialController {
 
-    @Autowired
-    private MaterialRepository materialRepository;
+    private final MaterialRepository materialRepository;
+
+    public MaterialController(MaterialRepository materialRepository) {
+        this.materialRepository = materialRepository;
+    }
+
     @PostMapping
     public ResponseEntity<DataResponseMaterial> registerMaterial(@RequestBody @Valid DataRegisterMaterial dataRegisterMaterial) {
         Material material = materialRepository.save(new Material(dataRegisterMaterial));

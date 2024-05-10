@@ -5,7 +5,6 @@ import com.fimeco.fimeco.domain.user.UserEntity;
 import com.fimeco.fimeco.domain.user.UserRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -16,11 +15,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/employee")
 public class EmployeeController {
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public EmployeeController(EmployeeRepository employeeRepository, UserRepository userRepository) {
+        this.employeeRepository = employeeRepository;
+        this.userRepository = userRepository;
+    }
+
     @PostMapping
     public ResponseEntity<DataResponseEmployee> registerEmployee(@RequestBody @Valid DataRegisterEmployee dataRegisterEmployee){
         UserEntity userEntity = userRepository.findByUsername(dataRegisterEmployee.username()).orElseThrow();

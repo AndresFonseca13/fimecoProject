@@ -4,7 +4,6 @@ import com.fimeco.fimeco.domain.address.DataAddress;
 import com.fimeco.fimeco.domain.supplier.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,8 +14,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/supplier")
 public class SupplierController {
 
-    @Autowired
-    private supplierRepository supplierRepository;
+    private final SupplierRepository supplierRepository;
+
+    public SupplierController(SupplierRepository supplierRepository) {
+        this.supplierRepository = supplierRepository;
+    }
 
     @PostMapping
     public ResponseEntity<DataResponseSupplier> registerSupplier(@RequestBody @Valid DataRegisterSupplier dataRegisterSupplier){

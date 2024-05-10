@@ -12,7 +12,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -35,7 +34,7 @@ public class JwtUtils {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        String jwtToken = JWT.create()
+        return JWT.create()
                 .withIssuer(this.userGenerator)
                 .withSubject(username)
                 .withClaim("authorities", authorities)
@@ -43,8 +42,6 @@ public class JwtUtils {
                 .withJWTId(UUID.randomUUID().toString())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 1800000))
                 .sign(algorithm);
-
-        return jwtToken;
     }
 
     public DecodedJWT validateToken(String token){
@@ -55,23 +52,18 @@ public class JwtUtils {
                     .withIssuer(this.userGenerator)
                     .build();
 
-            DecodedJWT decodedJWT = verifier.verify(token);
-
-            return decodedJWT;
+            return verifier.verify(token);
         } catch (Exception e){
             throw new JWTVerificationException("Token invalid, not Authorized");
         }
     }
 
     public String extractUsername(DecodedJWT decodedJWT){
-        return decodedJWT.getSubject().toString();
+        return decodedJWT.getSubject();
     }
 
     public Claim getSpecificClaim(DecodedJWT decodedJWT, String claimName){
         return decodedJWT.getClaim(claimName);
     }
 
-    public Map<String, Claim> returnAllClaims(DecodedJWT decodedJWT){
-        return decodedJWT.getClaims();
-    }
 }

@@ -5,7 +5,6 @@ import com.fimeco.fimeco.domain.Role.Role;
 import com.fimeco.fimeco.domain.Role.RoleEnum;
 import com.fimeco.fimeco.domain.user.*;
 import com.fimeco.fimeco.infra.utils.JwtUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,23 +22,26 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private JwtUtils jwtUtils;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final JwtUtils jwtUtils;
 
-    @Autowired
-    private RolRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
+
+    private final RolRepository roleRepository;
+
+    public UserDetailServiceImpl(UserRepository userRepository, JwtUtils jwtUtils, PasswordEncoder passwordEncoder, RolRepository roleRepository) {
+        this.userRepository = userRepository;
+        this.jwtUtils = jwtUtils;
+        this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
@@ -93,7 +95,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     }
 
     public AuthResponse createUser(AuthCreateUserRequest authCreateUserRequest){
-        String usename = authCreateUserRequest.username();
+        String username = authCreateUserRequest.username();
         String password = authCreateUserRequest.password();
         String email = authCreateUserRequest.email();
         String firstName = authCreateUserRequest.firstName();
@@ -101,14 +103,14 @@ public class UserDetailServiceImpl implements UserDetailsService {
         String phone = authCreateUserRequest.phone();
         List<String> roleRequest = authCreateUserRequest.roleRequest().roleListName();
 
-        Set<Role> roleEntitySet = roleRepository.findRoleEntitiesByRoleEnumIn(roleRequest).stream().collect(Collectors.toSet());
+        Set<Role> roleEntitySet = new HashSet<>(roleRepository.findRoleEntitiesByRoleEnumIn(roleRequest));
 
         if (roleEntitySet.isEmpty()){
             throw new IllegalArgumentException("Roles not found");
         }
 
         UserEntity userEntity = UserEntity.builder()
-                .username(usename)
+                .username(username)
                 .password(passwordEncoder.encode(password))
                 .email(email)
                 .firstName(firstName)
@@ -121,34 +123,33 @@ public class UserDetailServiceImpl implements UserDetailsService {
                 .credentialsNoExpired(true)
                 .build();
 
-
         return saveUserEntityAndCreateToken(userEntity);
     }
 
     public ResponseEntity<?> addRole(String username, String role){
-        UserEntity user = userRepository.findUserEntityByUsernameOrEmail(username, username).get();
-        Role roleAdd = roleRepository.findRoleByRoleEnumIn(Set.of(RoleEnum.valueOf(role))).get();
+        UserEntity user = userRepository.findUserEntityByUsernameOrEmail(username, username).orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+        Role roleAdd = roleRepository.findRoleByRoleEnumIn(Set.of(RoleEnum.valueOf(role))).orElseThrow(() -> new IllegalArgumentException("Role not found: " + role));
         user.addRole(roleAdd);
         userRepository.save(user);
         return ResponseEntity.ok().body("New Role added to user");
     }
 
     public ResponseEntity<?> removeRole(String username, String role){
-        UserEntity user = userRepository.findUserEntityByUsernameOrEmail(username, username).get();
-        Role roleRemove = roleRepository.findRoleByRoleEnumIn(Set.of(RoleEnum.valueOf(role))).get();
+        UserEntity user = userRepository.findUserEntityByUsernameOrEmail(username, username).orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+        Role roleRemove = roleRepository.findRoleByRoleEnumIn(Set.of(RoleEnum.valueOf(role))).orElseThrow(() -> new IllegalArgumentException("Role not found: " + role));
         user.removeRole(roleRemove);
         userRepository.save(user);
         return ResponseEntity.ok().body("Role removed from user");
     }
 
     public ResponseEntity<UserEntity> getUser(String username){
-        UserEntity userEntity = userRepository.findUserEntityByUsernameOrEmail(username, username).get();
+        UserEntity userEntity = userRepository.findUserEntityByUsernameOrEmail(username, username).orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
         return ResponseEntity.ok().body(userEntity);
     }
 
     public AuthResponse createNormalUSer(CreateUserRequest createUserRequest){
         Set<Role> roles = new HashSet<>();
-        roles.add(roleRepository.findRoleByRoleEnumIn(Set.of(RoleEnum.CLIENT)).get());
+        roles.add(roleRepository.findRoleByRoleEnumIn(Set.of(RoleEnum.CLIENT)).orElseThrow(() -> new IllegalArgumentException("Role not found: " + RoleEnum.CLIENT)));
         UserEntity userEntity = UserEntity.builder()
                 .username(createUserRequest.username())
                 .password(passwordEncoder.encode(createUserRequest.password()))
@@ -174,7 +175,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         userCreated.getRoles().forEach(role -> {
             authorityList.add(new SimpleGrantedAuthority("ROLE_".concat(role.getRoleEnum().name())));
             if (role.getPermissionsList() != null) {
-                role.getPermissionsList().stream()
+                role.getPermissionsList()
                         .forEach(permission -> authorityList.add(new SimpleGrantedAuthority(permission.getName())));
             }
         });

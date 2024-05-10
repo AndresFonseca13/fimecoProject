@@ -2,5 +2,5 @@ package com.fimeco.fimeco.domain.supplier;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface supplierRepository extends JpaRepository<Supplier, Long> {
+public interface SupplierRepository extends JpaRepository<Supplier, Long> {
 }

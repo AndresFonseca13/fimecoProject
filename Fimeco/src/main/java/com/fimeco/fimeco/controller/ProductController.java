@@ -2,7 +2,6 @@ package com.fimeco.fimeco.controller;
 
 import com.fimeco.fimeco.domain.product.*;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -13,11 +12,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/product")
 public class ProductController {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
+
+    public ProductController(ProductRepository productRepository, ProductService productService) {
+        this.productRepository = productRepository;
+        this.productService = productService;
+    }
 
     @PostMapping
     public ResponseEntity<DataResponseProduct> createProduct(@RequestBody DataRegisterProduct dataRegisterProduct){

@@ -5,7 +5,6 @@ import com.fimeco.fimeco.domain.client.ClientRepository;
 import com.fimeco.fimeco.domain.order.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -18,10 +17,14 @@ import java.util.List;
 @RequestMapping("/order")
 public class OrderController {
 
-    @Autowired
-    private OrderRepository orderRepository;
-    @Autowired
-    private ClientRepository clientRepository;
+    private final OrderRepository orderRepository;
+
+    private final ClientRepository clientRepository;
+
+    public OrderController(OrderRepository orderRepository, ClientRepository clientRepository) {
+        this.orderRepository = orderRepository;
+        this.clientRepository = clientRepository;
+    }
 
     @PostMapping
     public ResponseEntity<DataResponseOrder> registerOrder(@RequestBody @Valid DataRegisterOrder dataRegisterOrder){

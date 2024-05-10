@@ -7,7 +7,6 @@ import com.fimeco.fimeco.domain.user.UserEntity;
 import com.fimeco.fimeco.domain.user.UserRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -20,11 +19,14 @@ import java.util.List;
 @RequestMapping("/client")
 public class ClientController {
 
-    @Autowired
-    private ClientRepository clientRepository;
+    private final ClientRepository clientRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public ClientController(ClientRepository clientRepository, UserRepository userRepository) {
+        this.clientRepository = clientRepository;
+        this.userRepository = userRepository;
+    }
 
     @PostMapping
     public ResponseEntity<DataResponseClient> registerClient(@RequestBody @Valid DataRegisterClient dataRegisterClient){

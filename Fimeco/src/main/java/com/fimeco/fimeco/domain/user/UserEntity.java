@@ -34,7 +34,6 @@ public class UserEntity {
 
     private String phone;
 
-
     @Column(name = "is_enabled")
     private boolean isEnabled;
 
