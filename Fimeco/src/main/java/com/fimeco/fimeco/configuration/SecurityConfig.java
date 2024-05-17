@@ -38,6 +38,7 @@ public class SecurityConfig {
                 // Aquí se configuran las reglas de autorización para las solicitudes HTTP.
                 .authorizeHttpRequests(http -> {
                     http.requestMatchers(HttpMethod.POST, "/auth/**").permitAll();
+                    http.requestMatchers("/email/**").permitAll();
                     http.requestMatchers("/admin/**").hasAnyRole("ADMIN", "DEVELOPER");
                     http.requestMatchers("/client/**").hasAnyRole("DEVELOPER", "ADMIN", "CLIENT");
                     http.requestMatchers("/employee/**").hasAnyRole("WORKER", "ADMIN", "DEVELOPER");
