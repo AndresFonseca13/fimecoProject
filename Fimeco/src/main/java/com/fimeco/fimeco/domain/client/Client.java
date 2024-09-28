@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.UUID;
 
 @Table(name = "clients")
 @Entity(name = "clients")
@@ -20,8 +21,7 @@ import java.util.List;
 @Setter
 public class Client {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
     @Column(name = "name")
     private String name;
     @Column(name = "phone",unique = true)
@@ -68,6 +68,12 @@ public class Client {
         }
         if (dataUpdateClient.address() != null) {
             this.address = new Address(dataUpdateClient.address());
+        }
+    }
+    @PrePersist
+    public void generatedUuid(){
+        if (id == null){
+            id = UUID.randomUUID();
         }
     }
 }

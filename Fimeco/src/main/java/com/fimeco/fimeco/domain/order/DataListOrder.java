@@ -1,14 +1,15 @@
 package com.fimeco.fimeco.domain.order;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
-public record DataListOrder(Long id,
+public record DataListOrder(UUID id,
                             LocalDate fechaPedido,
                             LocalDate fechaEntrega,
                             State state,
                             String descripcion,
                             Integer cantidad,
-                            Long clienteId) {
+                            UUID clienteId) {
 
     public DataListOrder(Order order){
         this(order.getId(),

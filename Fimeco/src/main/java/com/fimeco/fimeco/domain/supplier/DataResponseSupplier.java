@@ -2,7 +2,9 @@ package com.fimeco.fimeco.domain.supplier;
 
 import com.fimeco.fimeco.domain.address.DataAddress;
 
-public record DataResponseSupplier(Long id,
+import java.util.UUID;
+
+public record DataResponseSupplier(UUID id,
                                    String name,
                                    String phone,
                                    String email,

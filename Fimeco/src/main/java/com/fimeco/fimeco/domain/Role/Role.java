@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Setter
 @Getter
@@ -18,8 +19,7 @@ import java.util.Set;
 public class Role{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
 
     @Column(name = "role_name")
     @Enumerated(EnumType.STRING)
@@ -28,4 +28,11 @@ public class Role{
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "role_permissions", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private Set<Permission> permissionsList = new HashSet<>();
+
+    @PrePersist
+    public void generatedUuid(){
+        if (id == null){
+            id = UUID.randomUUID();
+        }
+    }
 }

@@ -26,21 +26,22 @@ import java.util.Set;
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
 
-
     private final UserRepository userRepository;
 
     private final JwtUtils jwtUtils;
 
     private final PasswordEncoder passwordEncoder;
 
-
     private final RolRepository roleRepository;
 
-    public UserDetailServiceImpl(UserRepository userRepository, JwtUtils jwtUtils, PasswordEncoder passwordEncoder, RolRepository roleRepository) {
+    private final EmailServiceImpl emailService;
+
+    public UserDetailServiceImpl(UserRepository userRepository, JwtUtils jwtUtils, PasswordEncoder passwordEncoder, RolRepository roleRepository, EmailServiceImpl emailService) {
         this.userRepository = userRepository;
         this.jwtUtils = jwtUtils;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.emailService = emailService;
     }
 
     @Override
@@ -94,7 +95,8 @@ public class UserDetailServiceImpl implements UserDetailsService {
         return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
     }
 
-    public AuthResponse createUser(AuthCreateUserRequest authCreateUserRequest){
+    public AuthResponse createUser(AuthCreateUserRequest authCreateUserRequest) {
+    try {
         String username = authCreateUserRequest.username();
         String password = authCreateUserRequest.password();
         String email = authCreateUserRequest.email();
@@ -123,7 +125,14 @@ public class UserDetailServiceImpl implements UserDetailsService {
                 .credentialsNoExpired(true)
                 .build();
 
-        return saveUserEntityAndCreateToken(userEntity);
+        AuthResponse authResponse = saveUserEntityAndCreateToken(userEntity);
+
+        emailService.sendEmail(authCreateUserRequest.email(), "Welcome to Fimeco", "Welcome to Fimeco, we are glad to have you here");
+
+        return authResponse;
+    }catch (Exception e){
+        throw new IllegalArgumentException("Username or email already exists");
+        }
     }
 
     public ResponseEntity<?> addRole(String username, String role){

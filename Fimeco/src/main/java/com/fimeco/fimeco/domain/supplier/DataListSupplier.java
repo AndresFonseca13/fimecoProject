@@ -2,7 +2,9 @@ package com.fimeco.fimeco.domain.supplier;
 
 import com.fimeco.fimeco.domain.address.DataAddress;
 
-public record DataListSupplier(Long id, String name, String phone, String email, DataAddress address) {
+import java.util.UUID;
+
+public record DataListSupplier(UUID id, String name, String phone, String email, DataAddress address) {
 
     public DataListSupplier(Supplier supplier){
         this(supplier.getId(), supplier.getName(), supplier.getPhone(), supplier.getEmail(),

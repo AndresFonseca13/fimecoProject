@@ -2,8 +2,10 @@ package com.fimeco.fimeco.domain.client;
 
 import com.fimeco.fimeco.domain.address.DataAddress;
 
+import java.util.UUID;
+
 public record DataResponseClient(
-        Long id,
+        UUID id,
         String name,
         String email,
         String phone,

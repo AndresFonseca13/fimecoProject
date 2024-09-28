@@ -1,6 +1,8 @@
 package com.fimeco.fimeco.domain.materials;
 
-public record DataListMaterial(Long id,
+import java.util.UUID;
+
+public record DataListMaterial(UUID id,
                                String nombre,
                                String descripcion,
                                UnidadMedida unidadMedida,

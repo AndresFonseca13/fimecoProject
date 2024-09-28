@@ -1,11 +1,14 @@
 package com.fimeco.fimeco.domain.user;
 
 import com.fimeco.fimeco.domain.Role.Role;
+import com.fimeco.fimeco.domain.pqrs.Pqrs;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -16,9 +19,9 @@ import java.util.Set;
 @Builder
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Integer userId;
+    private UUID userId;
 
     @Column(unique = true)
     private String username;
@@ -50,6 +53,9 @@ public class UserEntity {
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Pqrs> pqrs;
+
     private String token;
 
     public void addRole(Role role){
@@ -58,5 +64,12 @@ public class UserEntity {
 
     public void removeRole(Role role){
         this.roles.remove(role);
+    }
+
+    @PrePersist
+    public void generatedUuid(){
+        if (userId == null){
+            userId = UUID.randomUUID();
+        }
     }
 }

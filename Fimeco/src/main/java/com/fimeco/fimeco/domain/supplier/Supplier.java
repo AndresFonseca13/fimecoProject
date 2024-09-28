@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.UUID;
 
 @Table(name = "suppliers")
 @Entity(name = "Supplier")
@@ -18,16 +19,20 @@ import java.util.List;
 @Setter
 public class Supplier {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
+
     @Column(name = "name")
     private String name;
+
     @Column(unique = true, name = "phone")
     private String phone;
+
     @Column(unique = true, name = "email")
     private String email;
+
     @Enumerated(EnumType.STRING)
     private Type type;
+
     @Embedded
     private Address address;
 
@@ -57,6 +62,13 @@ public class Supplier {
         }
         if (dataUpdateSupplier.address() != null) {
             this.address = address.updateData(dataUpdateSupplier.address());
+        }
+    }
+
+    @PrePersist
+    public void generatedUuid(){
+        if (id == null){
+            id = UUID.randomUUID();
         }
     }
 }

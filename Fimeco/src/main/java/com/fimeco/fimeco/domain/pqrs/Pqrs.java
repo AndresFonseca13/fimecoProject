@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Entity(name = "Pqrs")
 @Table(name = "pqrs")
 @Getter
@@ -15,19 +17,26 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Pqrs {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private UUID id;
 
     private String header;
+
     private String message;
+
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     @JsonBackReference
     private UserEntity userEntity;
 
-
+    @PrePersist
+    public void generatedUuid(){
+        if (id == null){
+            id = UUID.randomUUID();
+        }
+    }
 }

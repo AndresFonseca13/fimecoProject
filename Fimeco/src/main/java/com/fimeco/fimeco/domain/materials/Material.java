@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity(name = "Material")
 @Table(name = "materiales")
@@ -17,20 +18,26 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Material {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
+
     @Column(name = "name")
     private String nombre;
+
     @Column(name = "descripcion")
     private String descripcion;
+
     @Column(name = "cantidad")
     private Integer cantidad;
+
     @Column(name = "unidad_medida")
     @Enumerated(EnumType.STRING)
     private UnidadMedida unidadMedida;
+
     @Column(name = "precio_unitario")
     private Double preciounitario;
+
     @Column(name = "estado")
     @Enumerated(EnumType.STRING)
     private State state;
@@ -65,6 +72,13 @@ public class Material {
         }
         if (dataUpdateMaterial.state() != null) {
             this.state = dataUpdateMaterial.state();
+        }
+    }
+
+    @PrePersist
+    public void generatedUuid(){
+        if (id == null){
+            id = UUID.randomUUID();
         }
     }
 }

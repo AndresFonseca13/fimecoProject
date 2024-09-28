@@ -1,6 +1,7 @@
 package com.fimeco.fimeco.controller;
 
 import com.fimeco.fimeco.domain.user.*;
+import com.fimeco.fimeco.infra.services.EmailServiceImpl;
 import com.fimeco.fimeco.infra.services.ResetPasswordService;
 import com.fimeco.fimeco.infra.services.UserDetailServiceImpl;
 import jakarta.validation.Valid;
@@ -16,6 +17,7 @@ public class AuthenticationController {
     private final UserDetailServiceImpl userDetailService;
 
     private final ResetPasswordService resetPasswordService;
+
 
     public AuthenticationController(UserDetailServiceImpl userDetailService, ResetPasswordService resetPasswordService) {
         this.userDetailService = userDetailService;

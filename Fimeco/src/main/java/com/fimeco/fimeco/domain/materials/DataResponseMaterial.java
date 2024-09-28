@@ -1,8 +1,9 @@
 package com.fimeco.fimeco.domain.materials;
 
 
+import java.util.UUID;
 
-public record DataResponseMaterial(Long id,
+public record DataResponseMaterial(UUID id,
                                    String nombre,
                                    String descripcion,
                                    UnidadMedida unidadMedida,

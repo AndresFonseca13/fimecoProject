@@ -11,6 +11,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Table(name = "orders")
 @Entity(name = "Order")
@@ -19,22 +20,29 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Order {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
+
     @Column(name = "order_date")
     private LocalDate orderDate;
+
     @Column(name = "delivery_date")
     private LocalDate deliveryDate;
+
     @Column(name = "state")
     @Enumerated(EnumType.STRING)
     private State state;
+
     @Column(name = "description")
     private String description;
+
     @Column(name = "quantity")
     private Integer quantity;
+
     @Column(name = "price")
     private Double price;
+
     @Column(name = "pay_way")
     private PayWay payWay;
 
@@ -79,4 +87,12 @@ public class Order {
             this.payWay = dataUpdateOrder.payWay();
         }
     }
+
+    @PrePersist
+    public void generatedUuid(){
+        if (id == null){
+            id = UUID.randomUUID();
+        }
+    }
+
 }

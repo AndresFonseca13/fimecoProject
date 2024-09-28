@@ -1,9 +1,10 @@
 package com.fimeco.fimeco.domain.order;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public record DataResponseOrder(
-        Long id,
+        UUID id,
         LocalDate fechaPedido,
         LocalDate fechaEntrega,
         State state,
@@ -11,7 +12,7 @@ public record DataResponseOrder(
         Integer cantidad,
         Double precio,
         PayWay payWay,
-        Long clienteId,
+        UUID clienteId,
         String nombreCliente) {
 
     public DataResponseOrder(Order order){

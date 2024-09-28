@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity(name = "Employee")
 @Table(name = "employees")
@@ -21,9 +22,9 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Employee {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
 
     @Column(name = "document", unique = true)
     private String document;
@@ -111,6 +112,13 @@ public class Employee {
     }
     public void deactivateEmployee() {
         this.active = false;
+    }
+
+    @PrePersist
+    public void generatedUuid(){
+        if (id == null){
+            id = UUID.randomUUID();
+        }
     }
 
 }

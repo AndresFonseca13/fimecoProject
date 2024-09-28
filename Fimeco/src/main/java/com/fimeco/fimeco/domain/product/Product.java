@@ -13,6 +13,7 @@ import lombok.Setter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity(name = "Product")
 @Table(name = "products")
@@ -21,23 +22,30 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "description")
     private String description;
+
     @Column(name = "price")
     private Double price;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "state")
     private State state;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "unit_measurement")
     private UnidadMedida unitMeasurement;
+
     @Column(name = "time_construction")
     private String timeConstruction;
+
     @Column(name = "tank_type")
     private String tankType;
 
@@ -87,6 +95,13 @@ public class Product {
         }
         if (dataUpdateProduct.tankType() != null) {
             this.tankType = dataUpdateProduct.tankType();
+        }
+    }
+
+    @PrePersist
+    public void generatedUuid(){
+        if (id == null){
+            id = UUID.randomUUID();
         }
     }
 }

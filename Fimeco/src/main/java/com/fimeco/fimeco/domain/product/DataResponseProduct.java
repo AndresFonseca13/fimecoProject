@@ -2,7 +2,9 @@ package com.fimeco.fimeco.domain.product;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record DataResponseProduct(Long id,
+import java.util.UUID;
+
+public record DataResponseProduct(UUID id,
                                   String name,
                                   String description,
                                   Double price,
@@ -11,7 +13,7 @@ public record DataResponseProduct(Long id,
                                   UnidadMedida unitMeasurement,
                                   String timeConstruction,
                                   String tankType,
-                                  Long order_id) {
+                                  UUID order_id) {
 
     public DataResponseProduct(Product product){
         this(product.getId(),
